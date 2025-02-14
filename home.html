@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri-mate</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background-color: #52796F;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Calorie Circle */
+        .calorie-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #2F3E46;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .calorie-circle h2 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .calorie-circle p {
+            font-size: 0.8em;
+            margin: 0;
+            color: #666;
+        }
+
+        /* Today's Intake */
+        .intake {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .date {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Meal Blocks */
+        .meal-block {
+            background-color: #EDF5ED;
+            margin: 20px;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .meal-block-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .meal-block-header h3 {
+            margin: 0;
+        }
+
+        .meal-item {
+            background-color: #C1D4C7;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            background-color: #f0f0f0;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            color: #555;
+            position: relative;
+            /* Required for circle positioning */
+        }
+
+        /* Circle around Home Icon */
+        .home-icon-wrapper {
+            position: relative;
+        }
+
+        .home-icon-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            /Adjust for desired size/ height: 40px;
+            /Adjust for desired size/ border-radius: 50%;
+            background-color: #354F52;
+            /* Color of the fill */
+            /border: 2px solid #52796F; / Color of the circle / Remove the border/ z-index: -1;
+            /* Place behind the icon */
+        }
+
+        .home-icon {
+            color: #CAD2C5;
+            /*Color of the home icon */
+        }
+
+        /* Plus Icon Styling */
+        .plus-icon-wrapper {
+            position: relative;
+        }
+
+        .plus-icon-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            /Adjust for desired size/ height: 40px;
+            /Adjust for desired size/ border-radius: 50%;
+            background-color: #CAD2C5;
+            /* Fill color */
+            z-index: -1;
+            /* Behind the icon */
+        }
+
+        .plus-icon {
+            color: #2F3E46;
+            /* Icon color */
+        }
+
+        .bottom-nav .material-symbols-outlined {
+            color: #CAD2C5;
+        }
+
+        .bottom-nav .plus-icon {
+            color: #2F3E46;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Semi-transparent background */
+            z-index: 1;
+            /* Above everything else */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .modal-body {
+            margin-bottom: 15px;
+        }
+
+        .modal-body input[type="text"],
+        .modal-body input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .modal-footer .cancel-button {
+            background-color: #ddd;
+        }
+
+        .modal-footer .add-button {
+            background-color: #52796F;
+            color: white;
+        }
+
+        /*Icons*/
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <span class="material-symbols-outlined">menu</span>
+        <h1>Nutri-mate</h1>
+        <span class="material-symbols-outlined">person</span>
+    </div>
+
+    <!-- Calorie Circle -->
+    <div class="calorie-circle">
+        <h2 id="totalCalories">0</h2>
+        <p>TOTAL CALORIES</p>
+    </div>
+
+    <!-- Today's Intake -->
+    <div class="intake">Today's Intake</div>
+    <div class="date">
+        <span class="material-symbols-outlined">event</span>
+        10 February 2025
+    </div>
+
+    <!-- Breakfast Block -->
+    <div class="meal-block" data-meal="breakfast">
+        <div class="meal-block-header">
+            <h3>Breakfast</h3>
+            <span class="material-symbols-outlined add-meal-button">add</span>
+        </div>
+    </div>
+
+    <!-- Lunch Block -->
+    <div class="meal-block" data-meal="lunch">
+        <div class="meal-block-header">
+            <h3>Lunch</h3>
+            <span class="material-symbols-outlined add-meal-button">add</span>
+        </div>
+    </div>
+
+    <!-- Dinner Block -->
+    <div class="meal-block" data-meal="dinner">
+        <div class="meal-block-header">
+            <h3>Dinner</h3>
+            <span class="material-symbols-outlined add-meal-button">add</span>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="home-icon-wrapper">
+            <div class="home-icon-circle"></div>
+            <span class="material-symbols-outlined nav-icon home-icon">home</span>
+        </div>
+        <div class="plus-icon-wrapper">
+            <div class="plus-icon-circle"></div>
+            <span class="material-symbols-outlined nav-icon plus-icon">add</span>
+        </div>
+        <span class="material-symbols-outlined bottom-nav__calender">calendar_month</span>
+    </div>
+
+    <!-- The Modal -->
+    <div id="foodDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Enter Food Details</h2>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="foodName" placeholder="Food Name">
+                <input type="number" id="foodServings" placeholder="Servings" min="1" value="1">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="cancel-button">Cancel</button>
+                <button type="button" class="add-button">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get the modal
+        const modal = document.getElementById("foodDetailsModal");
+
+        // Get all plus buttons
+        const addMealButtons = document.querySelectorAll(".add-meal-button");
+
+        // Get the cancel button
+        const cancelButton = document.querySelector(".cancel-button");
+
+        // Get the add button
+        const addButton = document.querySelector(".add-button");
+
+        // Get total calorie count
+        const totalCaloriesElement = document.getElementById("totalCalories");
+        let totalCalories = parseInt(totalCaloriesElement.innerText);
+
+        let currentMealBlock = null;
+
+        // Add click event listener to each plus button
+        addMealButtons.forEach(button => {
+            button.addEventListener("click", (event) => {
+                modal.style.display = "flex"; // Show the modal
+                currentMealBlock = event.target.closest('.meal-block'); // Store which meal block was clicked
+            });
+        });
+
+        // Add click event listener to the cancel button
+        cancelButton.addEventListener("click", () => {
+            modal.style.display = "none"; // Hide the modal
+            currentMealBlock = null;
+        });
+
+        // Add click event listener to the add button
+        addButton.addEventListener("click", async () => {
+            const foodName = document.getElementById("foodName").value;
+            const foodServings = parseInt(document.getElementById("foodServings").value);
+
+            if (foodName && foodServings > 0) {
+                try {
+                    // Fetch calorie information from Open Food Facts API
+                    const apiUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${foodName}&search_simple=1&json=1`;
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+
+                    let caloriesPerServing = 0;
+
+                    if (data.products && data.products.length > 0) {
+                        // Extract calorie information from the first product
+                        const product = data.products[0];
+                        if (product.nutriments && product.nutriments['energy-kcal_100g']) {
+                            caloriesPerServing = product.nutriments['energy-kcal_100g'];
+                        } else {
+                            caloriesPerServing = 100;
+                        }
+                    } else {
+                        caloriesPerServing = 100;
+                    }
+
+                    // Calculate total calories for the given number of servings
+                    const totalMealCalories = caloriesPerServing * foodServings;
+
+                    // Create a new meal item
+                    const mealItem = document.createElement("div");
+                    mealItem.classList.add("meal-item");
+                    mealItem.innerHTML = `<span>${foodName} (${foodServings} servings)</span><span>${totalMealCalories}cal</span>`;
+
+                    // Append the meal item to the current meal block
+                    currentMealBlock.appendChild(mealItem);
+
+                    // Update total calories
+                    totalCalories += totalMealCalories;
+                    totalCaloriesElement.innerText = totalCalories;
+
+                    // Clear input fields
+                    document.getElementById("foodName").value = "";
+                    document.getElementById("foodServings").value = "1";
+
+                    // Hide the modal
+                    modal.style.display = "none";
+                    currentMealBlock = null;
+                } catch (error) {
+                    console.error("Error fetching calorie information:", error);
+                    alert("Could not fetch calorie information. Please try again.");
+                }
+            }
+        });
+
+        // Close the modal if the user clicks outside of it
+        window.addEventListener("click", (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                currentMealBlock = null;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
