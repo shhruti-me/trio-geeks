@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Selection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #f8fff4, #dfeedd);
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: #7faa68;
+        }
+
+        a {
+            text-decoration: none; /* Remove underline from links */
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            background-color: white;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            border-color: #7faa68; /* Highlight on hover */
+        }
+
+        button.selected {
+            border-color: #7faa68; /* Highlight selected button */
+            background-color: #e6f8d8; /* Light green background */
+        }
+
+        button img {
+            width: 80px;
+            height: auto;
+        }
+
+        button span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Are you a <em>hostel/pg student</em> or an <em>individual</em>?</h1>
+
+        <!-- Individual Button -->
+        <a href="individual.html">
+            <button id="individualButton">
+                <span>Individual</span>
+                <img src="./images/asking-question.svg" alt="Individual Illustration">
+            </button>
+        </a>
+
+        <!-- Hostel/PG Student Button -->
+        <a href="hostel.html">
+            <button id="hostelButton">
+                <span>Hostel/pg Student</span>
+                <img src="./images/asking-question2.svg" alt="Hostel Student Illustration">
+            </button>
+        </a>
+    </div>
+
+    <script>
+        // Get references to the buttons
+        const individualButton = document.getElementById("individualButton");
+        const hostelButton = document.getElementById("hostelButton");
+
+        // Add click event listeners to toggle selection
+        individualButton.addEventListener("click", () => {
+            individualButton.classList.add("selected");
+            hostelButton.classList.remove("selected");
+        });
+
+        hostelButton.addEventListener("click", () => {
+            hostelButton.classList.add("selected");
+            individualButton.classList.remove("selected");
+        });
+    </script>
+</body>
+</html>
