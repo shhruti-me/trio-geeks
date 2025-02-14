@@ -67,40 +67,6 @@
         img {
             max-width: 100%;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -109,23 +75,15 @@
         <input type="number" id="height" placeholder="Enter height in cm" oninput="calculateBMI()">
         <input type="number" id="weight" placeholder="Enter weight in kg" oninput="calculateBMI()">
         <div class="bmi-result" id="bmi">BMI: --</div>
-        <button onclick="showBMIFeedback()">Move to next</button>
+        <a href="health.html">
+            <button type="submit" class="submit-btn">Move to next</button>
+        </a>
         <div class="illustration">
             <img src="images/fitness-app.svg" alt="BMI Illustration">
         </div>
     </div>
 
-    <div id="bmiModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Your BMI Result</h2>
-            <p id="bmiMessage"></p>
-        </div>
-    </div>
-
     <script>
-        let bmiValue = 0;
-
         function calculateBMI() {
             let height = document.getElementById("height").value;
             let weight = document.getElementById("weight").value;
@@ -134,48 +92,10 @@
             if (height && weight) {
                 let h = parseFloat(height) / 100;
                 let w = parseFloat(weight);
-                bmiValue = (w / (h * h)).toFixed(1);
-                bmiDisplay.innerText = `BMI: ${bmiValue}`;
+                let bmi = (w / (h * h)).toFixed(1);
+                bmiDisplay.innerText = `BMI: ${bmi}`;
             } else {
                 bmiDisplay.innerText = "BMI: --";
-                bmiValue = 0;
-            }
-        }
-
-        function showBMIFeedback() {
-            if (bmiValue === 0) {
-                alert("Please enter your height and weight first.");
-                return;
-            }
-
-            let message = "";
-            if (bmiValue < 18.5) {
-                message = "Your BMI is low, but every journey to a healthier you starts with a single step! Focus on nourishing your body with balanced meals and strength-building exercises. You've got this!";
-            } else if (bmiValue >= 18.5 && bmiValue < 25) {
-                message = "Great job! Your BMI is in the healthy range. Keep up your balanced diet and active lifestyle. Small, consistent efforts lead to long-term health!";
-            } else {
-                message = "You're on the right track! A little adjustment in your diet and activity can bring great results. Start today, stay consistent, and trust the process!";
-            }
-
-            document.getElementById("bmiMessage").innerText = message;
-            document.getElementById("bmiModal").style.display = "block";
-        }
-
-        // Get the modal
-        var modal = document.getElementById("bmiModal");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
             }
         }
     </script>
