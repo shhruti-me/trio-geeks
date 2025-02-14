@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri-mate - Pantry Inventory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f8f0; /* Light green background */
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #f0f8f0; /* Light green container */
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: #7faa68;
+        }
+
+        /* Pantry Inventory Styles */
+        .pantry-inventory {
+            width: 100%;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .pantry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .pantry-header h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .add-item-button {
+            background-color: #f0f8f0; /*Light green button*/
+            border: none;
+            color: #555;
+            padding: 8px 12px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            line-height: 18px; /* Vertically center the plus sign */
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 40% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            position: relative;
+            text-align: left;
+            border-radius: 10px;
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Modal Input Styles */
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 20px; /*Rounded Inputs*/
+            font-size: 16px;
+            background-color: #f0f0f0; /*Light gray input background */
+        }
+
+        .modal-buttons {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .modal-buttons button {
+            background-color: #ddd; /* Light gray */
+            color: #333;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .modal-buttons button.add {
+            background-color: #7faa68; /* Green add button */
+            color: white;
+        }
+
+        /* Item List Styles */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* Divide into 3 columns */
+            align-items: center;
+        }
+
+        .item-details {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-qty, .item-expiry {
+            color: #777;
+            font-size: 14px;
+            text-align: center; /*Center qty and expiry*/
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f0f8f0;
+            color: black;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /*Header Style*/
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f0f8f0;
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .profile-icon {
+            font-size: 24px;
+            color: #7faa68;
+            cursor: pointer;
+        }
+
+        /*Footer Styles*/
+        .footer-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            background-color: #f0f8f0;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            color: #7faa68;
+            cursor: pointer;
+        }
+
+        /*Custom Styles*/
+        input[type="date"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <div class="header">
+        <h1>Nutri-mate</h1>
+        <span class="profile-icon"><i class="fas fa-user-circle"></i></span>
+    </div>
+
+    <div class="container">
+        <div class="pantry-inventory">
+            <div class="pantry-header">
+                <h2>Pantry Inventory</h2>
+                <button class="add-item-button" onclick="openAddItemModal()">+</button>
+            </div>
+            <ul class="item-list" id="itemList">
+                <!-- Items will be added here dynamically -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddItemModal()">&times;</span>
+            <h2>Add Item</h2>
+            <input type="text" id="itemName" placeholder="Enter Item">
+            <input type="text" id="itemQuantity" placeholder="Enter Quantity">
+            <input type="date" id="itemExpiry">
+
+            <div class="modal-buttons">
+                <button onclick="closeAddItemModal()">Cancel</button>
+                <button class="add" onclick="addItem()">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-nav">
+            <span class="nav-icon"><i class="fas fa-home"></i></span>
+            <span class="nav-icon"><i class="fas fa-plus-circle"></i></span>
+            <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span>
+        </div>
+        <p>&copy; 2025 Nutri-mate. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Pantry Inventory Logic
+        function openAddItemModal() {
+            document.getElementById("addItemModal").style.display = "block";
+        }
+
+        function closeAddItemModal() {
+            document.getElementById("addItemModal").style.display = "none";
+        }
+
+        function addItem() {
+            let itemName = document.getElementById("itemName").value;
+            let itemQuantity = document.getElementById("itemQuantity").value;
+            let itemExpiry = document.getElementById("itemExpiry").value;
+
+            if (itemName && itemQuantity && itemExpiry) {
+                let itemList = document.getElementById("itemList");
+                let listItem = document.createElement("li");
+
+                listItem.innerHTML = `
+                    <div class="item-name">${itemName}</div>
+                    <div class="item-qty">${itemQuantity}</div>
+                    <div class="item-expiry">${itemExpiry}</div>
+                `;
+
+                itemList.appendChild(listItem);
+
+                // Clear input fields
+                document.getElementById("itemName").value = "";
+                document.getElementById("itemQuantity").value = "";
+                document.getElementById("itemExpiry").value = "";
+
+                closeAddItemModal();
+            } else {
+                alert("Please fill in all fields!");
+            }
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.addEventListener('click', function(event) {
+            var modal = document.getElementById("addItemModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
