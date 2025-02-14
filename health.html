@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Issues</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: "Poppins", serif;         
         }
 
         body {
@@ -28,7 +31,7 @@
         }
 
         h1 {
-            font-size: 22px;
+            font-size: 30px;
             font-weight: bold;
             color: #333;
             margin-bottom: 20px;
@@ -45,23 +48,31 @@
         }
 
         .select-wrapper select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
             appearance: none;
             -webkit-appearance: none; /* For Safari */
             -moz-appearance: none; /* For Firefox */
             background-color: white;
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
 
         .select-wrapper::after {
-            content: '\25BC'; /* Downward arrow */
+            content: '';  /* Remove Unicode content */
             position: absolute;
             top: 50%;
             right: 15px;
             transform: translateY(-50%);
-            pointer-events: none; /* Prevent interaction with the arrow */
+            pointer-events: none; /* Prevent interaction */
+            
+            /* V-shaped arrow using borders */
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #333; /* Adjust color as needed */
         }
 
         button {
@@ -101,6 +112,7 @@
                 <option value="hypertension">Hypertension</option>
                 <option value="heart">Heart Issues</option>
                 <option value="other">Other</option>
+                <option value="none">None</option>
             </select>
         </div>
 
@@ -112,6 +124,7 @@
                 <option value="gluten">Gluten</option>
                 <option value="dairy">Dairy</option>
                 <option value="other">Other</option>
+                <option value="none">None</option>
             </select>
         </div>
 
@@ -123,6 +136,7 @@
                 <option value="salt">Salt</option>
                 <option value="fried">Fried Food</option>
                 <option value="other">Other</option>
+                <option value="none">None</option>
             </select>
         </div>
 
