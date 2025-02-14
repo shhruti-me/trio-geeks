@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #fff, #e6f8d8);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        h1 em {
+            font-style: italic;
+            color: #7faa68;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .bmi-result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #7faa68;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+        }
+        .illustration {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enter your <em>height</em> and <em>weight</em> to personalize your experience.</h1>
+        <input type="number" id="height" placeholder="Enter height in cm" oninput="calculateBMI()">
+        <input type="number" id="weight" placeholder="Enter weight in kg" oninput="calculateBMI()">
+        <div class="bmi-result" id="bmi">BMI: --</div>
+        <button>Move to next</button>
+        <div class="illustration">
+            <img src="images/fitness-app.svg" alt="BMI Illustration">
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let height = document.getElementById("height").value;
+            let weight = document.getElementById("weight").value;
+            let bmiDisplay = document.getElementById("bmi");
+            
+            if (height && weight) {
+                let h = parseFloat(height) / 100;
+                let w = parseFloat(weight);
+                let bmi = (w / (h * h)).toFixed(1);
+                bmiDisplay.innerText = `BMI: ${bmi}`;
+            } else {
+                bmiDisplay.innerText = "BMI: --";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Issues</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #fff, #e6f8d8);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        h1 em {
+            font-style: italic;
+            color: #7faa68;
+        }
+
+        .select-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .select-wrapper select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            appearance: none;
+            -webkit-appearance: none; /* For Safari */
+            -moz-appearance: none; /* For Firefox */
+            background-color: white;
+        }
+
+        .select-wrapper::after {
+            content: '\25BC'; /* Downward arrow */
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            pointer-events: none; /* Prevent interaction with the arrow */
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: none;
+            background-color: #7faa68;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #6c9a5c; /* Slightly darker green for hover */
+        }
+
+        button:disabled {
+            background-color: #ccc; /* Gray for disabled button */
+        }
+
+        .illustration img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Provide your <em>health conditions</em> and any foods you wish to avoid.</h1>
+
+        <!-- Dropdown for Health Issues -->
+        <div class="select-wrapper">
+            <select id="healthIssues">
+                <option value="" disabled selected>Health issues</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="hypertension">Hypertension</option>
+                <option value="heart">Heart Issues</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <!-- Dropdown for Food Allergies -->
+        <div class="select-wrapper">
+            <select id="foodAllergies">
+                <option value="" disabled selected>Food Allergies</option>
+                <option value="nuts">Nuts</option>
+                <option value="gluten">Gluten</option>
+                <option value="dairy">Dairy</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <!-- Dropdown for Foods to Avoid -->
+        <div class="select-wrapper">
+            <select id="avoidFoods">
+                <option value="" disabled selected>Other foods to be avoided</option>
+                <option value="sugar">Sugar</option>
+                <option value="salt">Salt</option>
+                <option value="fried">Fried Food</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <!-- Button -->
+        <a href="roles.html">
+            <button type="submit" id="nextButton" disabled>Move to next</button>
+        </a>
+        <!-- Illustration -->
+        <div class="illustration">
+            <img src="./images/eat-healthy.svg" alt="Health Illustration">
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Enable the button only if all dropdowns have a selection
+        const healthIssues = document.getElementById("healthIssues");
+        const foodAllergies = document.getElementById("foodAllergies");
+        const avoidFoods = document.getElementById("avoidFoods");
+        const nextButton = document.getElementById("nextButton");
+
+        function checkSelections() {
+          nextButton.disabled = !(
+              healthIssues.value &&
+              foodAllergies.value &&
+              avoidFoods.value
+          );
+      }
+
+      healthIssues.addEventListener("change", checkSelections);
+      foodAllergies.addEventListener("change", checkSelections);
+      avoidFoods.addEventListener("change", checkSelections);
+    </script>
+</body>
+</html>
