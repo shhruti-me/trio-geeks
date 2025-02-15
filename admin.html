@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri-mate</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <style>
+        :root {
+    --primary-color: rgb(84, 110, 101);
+    --secondary-color: rgb(194, 208, 203);
+    --background-color: #f5f7f6;
+    --text-color: #333;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding-bottom: 80px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.menu-btn, .profile-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.menu-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: white;
+    margin: 4px 0;
+    transition: var(--transition);
+}
+
+.menu-btn:hover span {
+    background-color: var(--secondary-color);
+}
+
+.days-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    background-color: white;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.day-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.day-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.day-btn:hover:not(.active) {
+    background-color: var(--secondary-color);
+}
+
+.meal-section {
+    background-color: white;
+    margin: 1rem;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--secondary-color);
+}
+
+.meal-header h2 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.expand-btn:hover {
+    transform: rotate(45deg);
+}
+
+.meal-content {
+    padding: 1rem;
+}
+
+.meal-table {
+    width: 100%;
+}
+
+.table-header, .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.table-header {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.add-btn {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-btn:hover {
+    transform: translateX(-50%) scale(1.1);
+    background-color: #45574f;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.popup-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.3s ease-out;
+}
+
+.popup-content h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.food-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    font-size: 1rem;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.cancel-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.add-meal-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.add-meal-btn:hover {
+    background-color: #45574f;
+}
+
+@media (min-width: 768px) {
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.meal-section {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <button class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1>Nutri-mate</h1>
+        <button class="profile-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+            </svg>
+        </button>
+    </header>
+
+    <nav class="days-nav">
+        <button class="day-btn">M</button>
+        <button class="day-btn">T</button>
+        <button class="day-btn active">W</button>
+        <button class="day-btn">T</button>
+        <button class="day-btn">F</button>
+        <button class="day-btn">S</button>
+    </nav>
+
+    <main>
+        <section class="meal-section">
+            <div class="meal-header">
+                <h2>Breakfast</h2>
+                <button class="expand-btn but">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="meal-content">
+                <div class="meal-table">
+                    <div class="table-header">
+                        <span>Items</span>
+                        <span>Quantity</span>
+                        <span>Servings</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Omelette</span>
+                        <span>400cal</span>
+                        <span>200</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Toast</span>
+                        <span>400cal</span>
+                        <span>200</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Coconut Chutney</span>
+                        <span>430cal</span>
+                        <span>200</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="meal-section">
+            <div class="meal-header">
+                <h2>Lunch</h2>
+                <button class="expand-btn but">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="meal-content">
+                <div class="meal-table">
+                    <div class="table-header">
+                        <span>Items</span>
+                        <span>Quantity</span>
+                        <span>Servings</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Omelette</span>
+                        <span>400cal</span>
+                        <span>200</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Toast</span>
+                        <span>400cal</span>
+                        <span>200</span>
+                    </div>
+                    <div class="table-row">
+                        <span>Coconut Chutney</span>
+                        <span>430cal</span>
+                        <span>200</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="popup" id="addMealPopup">
+        <div class="popup-content">
+            <h2>Enter Food Details</h2>
+            <div class="form-group">
+                <input type="text" id="foodName" placeholder="Enter Food Details" class="food-input">
+            </div>
+            <div class="form-group">
+                <select id="typeOfOil" class="input-field">
+                    <option value="">Type of oil</option>
+                    <option value="olive">Olive Oil</option>
+                    <option value="sunflower">Sunflower Oil</option>
+                    <option value="coconut">Coconut Oil</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" id="oilUsage" placeholder="Oil usage (in liters)" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="number" id="ghee" placeholder="Ghee (in grams)" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="number" id="butter" placeholder="Butter (in grams)" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="number" id="sugar" placeholder="Sugar (in grams)" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="number" id="salt" placeholder="Salt (in grams)" class="input-field">
+            </div>
+            <div class="form-group">
+                <input type="number" id="servings" placeholder="Total servings" class="input-field">
+            </div>
+            <div class="popup-buttons">
+                <button class="cancel-btn" id="cancelBtn">Cancel</button>
+                <button class="add-meal-btn" id="addMealBtn">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="add-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+        </svg>
+    </button>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    // Day buttons interaction
+    const dayButtons = document.querySelectorAll('.day-btn');
+    dayButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            dayButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        });
+    });
+
+    // Add button interaction to show popup
+    const addButton = document.querySelector('.but');
+    const popup = document.getElementById('addMealPopup');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const addMealBtn = document.getElementById('addMealBtn');
+
+    addButton.addEventListener('click', () => {
+        popup.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when popup is open
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        popup.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+        resetForm();
+    });
+
+    addMealBtn.addEventListener('click', () => {
+        // Here you would normally handle the form submission
+        // For now, we'll just close the popup
+        popup.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+        resetForm();
+        console.log('Meal added');
+    });
+
+    // Close popup when clicking outside
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            popup.style.display = 'none';
+            document.body.style.overflow = ''; // Restore scrolling
+            resetForm();
+        }
+    });
+
+    function resetForm() {
+        // Reset all input fields
+        const inputs = popup.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+    }
+
+    // Menu button interaction
+    const menuButton = document.querySelector('.menu-btn');
+    menuButton.addEventListener('click', () => {
+        console.log('Menu clicked');
+    });
+
+    // Profile button interaction
+    const profileButton = document.querySelector('.profile-btn');
+    profileButton.addEventListener('click', () => {
+        console.log('Profile clicked');
+    });
+});
+    </script>
+</body>
+</html>
